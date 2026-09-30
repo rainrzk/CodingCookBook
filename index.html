@@ -1,224 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>A Brief Cookbook of Coding</title>
-<meta name="description" content="A brief cookbook for introducing how to code: data structures and algorithms, written in Python, with the ideas ahead of low-level detail.">
-<meta property="og:title" content="A Brief Cookbook of Coding">
-<meta property="og:description" content="A brief cookbook for introducing how to code: data structures and algorithms, written in Python.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://rainrzk.github.io/CodingCookBook/">
-<meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f5bd3'/%3E%3Ctext x='32' y='43' font-family='Menlo,Consolas,monospace' font-size='30' font-weight='700' text-anchor='middle' fill='white'%3E%7B%7D%3C/text%3E%3C/svg%3E">
-<style>
-  :root {
-    --bg: #f7f5f0;
-    --surface: #ffffff;
-    --text: #1d1f24;
-    --muted: #5d6270;
-    --accent: #2f5bd3;
-    --accent-ink: #ffffff;
-    --rule: #e0dbd0;
-    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    color-scheme: light dark;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #15171c;
-      --surface: #1e2129;
-      --text: #e9e7e2;
-      --muted: #a0a6b1;
-      --accent: #86a6ff;
-      --accent-ink: #10131a;
-      --rule: #2e333d;
+  <meta charset="UTF-8">
+  <title>A Brief Cookbook of Coding</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
     }
-  }
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font: 18px/1.65 var(--serif);
-  }
-  a { color: var(--accent); }
-  a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-  .wrap { max-width: 900px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
-
-  header { padding: 76px 0 44px; }
-  .kicker {
-    font: 600 13px/1.4 var(--mono);
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  h1 {
-    font-variant: small-caps;
-    font-weight: 600;
-    font-size: clamp(36px, 7.5vw, 60px);
-    line-height: 1.05;
-    letter-spacing: .01em;
-    margin: 14px 0 18px;
-  }
-  .lede { font-size: 21px; color: var(--muted); max-width: 34em; margin: 0; }
-  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-  .button {
-    font: 600 15px/1 var(--sans);
-    padding: 13px 18px;
-    border-radius: 9px;
-    border: 1px solid var(--rule);
-    background: var(--surface);
-    color: var(--text);
-    text-decoration: none;
-  }
-  .button:hover { border-color: var(--accent); }
-  .button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-
-  section { padding: 36px 0; border-top: 1px solid var(--rule); }
-  h2 { font: 700 25px/1.3 var(--serif); margin: 0 0 18px; }
-  h2 .aside { font: 400 15px/1 var(--sans); color: var(--muted); margin-left: 6px; }
-  .intro p { max-width: 36em; margin: 0 0 14px; }
-  .intro .epigraph { font-style: italic; }
-
-  .toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 12px 48px; }
-  .toc ol { list-style: none; margin: 0; padding: 0; }
-  .toc ol ol { padding-left: 1.4em; }
-  .toc a {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    padding: 4px 0;
-    color: var(--text);
-    text-decoration: none;
-  }
-  .toc a:hover .title { text-decoration: underline; text-decoration-color: var(--accent); }
-  .toc .num, .toc .page { font: 14px/1 var(--mono); color: var(--muted); }
-  .toc .num { min-width: 3.3em; }
-  .toc .dots { flex: 1; min-width: 1em; border-bottom: 1px dotted var(--rule); transform: translateY(-5px); }
-  .toc > ol > li > a { font-weight: 700; font-size: 20px; }
-  .toc > ol > li > ol > li > a { font-weight: 600; }
-  .toc > ol > li > ol > li > ol a { color: var(--muted); }
-  .toc > ol > li + li { margin-top: 6px; }
-
-  .reader iframe {
-    display: block;
-    width: 100%;
-    height: 82vh;
-    border: 1px solid var(--rule);
-    border-radius: 10px;
-    background: var(--surface);
-  }
-  .reader .phone { display: none; margin: 0; }
-  @media (max-width: 720px) {
-    body { font-size: 17px; }
-    header { padding-top: 52px; }
-    .reader iframe { display: none; }
-    .reader .phone { display: block; }
-  }
-
-  footer { padding: 30px 0 60px; border-top: 1px solid var(--rule); color: var(--muted); font: 15px/1.6 var(--sans); }
-  footer p { margin: 0; }
-</style>
+    .pdf-container {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .pdf-container embed {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      display: block;
+    }
+  </style>
 </head>
 <body>
-
-<header class="wrap">
-  <div class="kicker">Data structures · Algorithms · Python</div>
-  <h1>A Brief Cookbook of Coding</h1>
-  <p class="lede">A brief cookbook for introducing how to code: data structures and algorithms, written in Python, with the ideas ahead of low-level detail.</p>
-  <div class="actions">
-    <a class="button primary" href="A_Brief_Cookbook_of_Coding.pdf">Read the PDF</a>
-    <a class="button" href="A_Brief_Cookbook_of_Coding.pdf" download>Download · 41 pages</a>
-    <a class="button" href="A_Brief_Cookbook_of_Coding.tex">LaTeX source</a>
-    <a class="button" href="https://github.com/rainrzk/CodingCookBook">GitHub</a>
+  <div class="pdf-container">
+    <embed src="A_Brief_Cookbook_of_Coding.pdf" type="application/pdf">
   </div>
-</header>
-
-<main>
-  <section class="wrap intro" aria-labelledby="why">
-    <h2 id="why">About</h2>
-    <p class="epigraph">Do you know why the table of contents can’t be part of the table of contents? Because of self-reference! And that’s pretty much the core idea behind this coding cookbook.</p>
-    <p>For a better coding experience — let’s use Python in this cookbook. This isn’t to criticize C++ or Java, but Python code is usually much easier to express ideas (while still offering good performance for most cases). We do not delve into low-level implementations in depth, as they are less important than their use within higher-level ideas.</p>
-    <p>I used to code primarily in C++. Note that data structures and algorithms are far more important than any specific programming language. Try solving problems on <a href="https://codeforces.com/">Codeforces</a>, <a href="https://leetcode.com/">LeetCode</a> or <a href="https://www.luogu.com.cn/">Luogu</a> — or any coding platform you prefer!</p>
-  </section>
-
-  <section class="wrap" aria-labelledby="contents">
-    <h2 id="contents">Contents <span class="aside">(not including itself)</span></h2>
-    <nav class="toc" aria-label="Contents">
-      <ol>
-        <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=3"><span class="num">1</span><span class="title">Data Structures</span><span class="dots"></span><span class="page">3</span></a>
-          <ol>
-            <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=3"><span class="num">1.1</span><span class="title">Linear Structures</span><span class="dots"></span><span class="page">3</span></a>
-              <ol>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=3"><span class="num">1.1.1</span><span class="title">Hashtable</span><span class="dots"></span><span class="page">3</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=5"><span class="num">1.1.2</span><span class="title">Stack</span><span class="dots"></span><span class="page">5</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=5"><span class="num">1.1.3</span><span class="title">Queue</span><span class="dots"></span><span class="page">5</span></a></li>
-              </ol>
-            </li>
-            <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=6"><span class="num">1.2</span><span class="title">Tree</span><span class="dots"></span><span class="page">6</span></a>
-              <ol>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=6"><span class="num">1.2.1</span><span class="title">Heap</span><span class="dots"></span><span class="page">6</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=7"><span class="num">1.2.2</span><span class="title">Balanced Search Tree</span><span class="dots"></span><span class="page">7</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=10"><span class="num">1.2.3</span><span class="title">Fenwick Tree</span><span class="dots"></span><span class="page">10</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=13"><span class="num">1.2.4</span><span class="title">Segment Tree</span><span class="dots"></span><span class="page">13</span></a></li>
-              </ol>
-            </li>
-            <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=15"><span class="num">1.3</span><span class="title">Graph</span><span class="dots"></span><span class="page">15</span></a>
-              <ol>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=15"><span class="num">1.3.1</span><span class="title">Disjoint Set Union</span><span class="dots"></span><span class="page">15</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=18"><span class="num">1.3.2</span><span class="title">Bipartite Graphs</span><span class="dots"></span><span class="page">18</span></a></li>
-              </ol>
-            </li>
-          </ol>
-        </li>
-      </ol>
-      <ol>
-        <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=23"><span class="num">2</span><span class="title">Algorithms</span><span class="dots"></span><span class="page">23</span></a>
-          <ol>
-            <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=23"><span class="num">2.1</span><span class="title">Handy Tricks</span><span class="dots"></span><span class="page">23</span></a>
-              <ol>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=23"><span class="num">2.1.1</span><span class="title">Prime Sieve</span><span class="dots"></span><span class="page">23</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=23"><span class="num">2.1.2</span><span class="title">KMP Algorithm</span><span class="dots"></span><span class="page">23</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=24"><span class="num">2.1.3</span><span class="title">Quick Power</span><span class="dots"></span><span class="page">24</span></a></li>
-              </ol>
-            </li>
-            <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=25"><span class="num">2.2</span><span class="title">Search</span><span class="dots"></span><span class="page">25</span></a>
-              <ol>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=25"><span class="num">2.2.1</span><span class="title">DFS</span><span class="dots"></span><span class="page">25</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=26"><span class="num">2.2.2</span><span class="title">BFS</span><span class="dots"></span><span class="page">26</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=26"><span class="num">2.2.3</span><span class="title">Binary Search</span><span class="dots"></span><span class="page">26</span></a></li>
-              </ol>
-            </li>
-            <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=27"><span class="num">2.3</span><span class="title">Divide and Conquer</span><span class="dots"></span><span class="page">27</span></a></li>
-            <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=29"><span class="num">2.4</span><span class="title">Dynamic Programming</span><span class="dots"></span><span class="page">29</span></a></li>
-            <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=36"><span class="num">2.5</span><span class="title">Graph Theory</span><span class="dots"></span><span class="page">36</span></a>
-              <ol>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=36"><span class="num">2.5.1</span><span class="title">Minimum Spanning Tree</span><span class="dots"></span><span class="page">36</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=37"><span class="num">2.5.2</span><span class="title">Single Source Shortest Path</span><span class="dots"></span><span class="page">37</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=39"><span class="num">2.5.3</span><span class="title">Strongly Connected Components</span><span class="dots"></span><span class="page">39</span></a></li>
-                <li><a href="A_Brief_Cookbook_of_Coding.pdf#page=40"><span class="num">2.5.4</span><span class="title">Topological Sort</span><span class="dots"></span><span class="page">40</span></a></li>
-              </ol>
-            </li>
-          </ol>
-        </li>
-      </ol>
-    </nav>
-  </section>
-
-  <section class="wrap reader" aria-labelledby="read">
-    <h2 id="read">Read it here</h2>
-    <iframe src="A_Brief_Cookbook_of_Coding.pdf#view=FitH" title="A Brief Cookbook of Coding (PDF)" loading="lazy"></iframe>
-    <p class="phone">On a phone the PDF reads best on its own: <a href="A_Brief_Cookbook_of_Coding.pdf">open it here</a>.</p>
-  </section>
-</main>
-
-<footer class="wrap">
-  <p>Written by <a href="https://github.com/rainrzk">rainrzk</a>, typeset in LaTeX. The source is in the <a href="https://github.com/rainrzk/CodingCookBook">repository</a>.</p>
-</footer>
-
 </body>
 </html>
